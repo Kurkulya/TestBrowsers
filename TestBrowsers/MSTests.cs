@@ -115,40 +115,42 @@ namespace TestBrowsers
     public abstract class MSTestCalcJS
     {
         internal static IWebDriver driver;
-
+        POM obj;
         [ClassCleanup]
         static public void TearDown()
         {
             driver.Quit();
         }
 
+
         [TestInitialize]
         public void TestUp()
         {
+            obj = new POM(driver);
             driver.Navigate().GoToUrl("file:///E:/C%23%201708/Calcs/With%20Buttons/CalcJSWithButtons/CalcJSwithButtons.html");
         }
 
         [DataTestMethod]
-        [DataRow("but1", "1")]
-        [DataRow("but2", "2")]
-        [DataRow("but3", "3")]
-        [DataRow("but4", "4")]
-        [DataRow("but5", "5")]
-        [DataRow("but6", "6")]
-        [DataRow("but7", "7")]
-        [DataRow("but8", "8")]
-        [DataRow("but9", "9")]
-        [DataRow("but0", "0")]
-        [DataRow("butMinus", "-")]
-        [DataRow("butPlus", "+")]
-        [DataRow("butMult", "*")]
-        [DataRow("butDiv", "/")]
-        [DataRow("butEqual", "=")]
-        [DataRow("resField", "")]
-        public void TestExistingElements(string elementId, string res)
+        [DataRow("but1")]
+        [DataRow("but2")]
+        [DataRow("but3")]
+        [DataRow("but4")]
+        [DataRow("but5")]
+        [DataRow("but6")]
+        [DataRow("but7")]
+        [DataRow("but8")]
+        [DataRow("but9")]
+        [DataRow("but0")]
+        [DataRow("butMinus")]
+        [DataRow("butPlus")]
+        [DataRow("butMult")]
+        [DataRow("butDiv")]
+        [DataRow("butEqual")]
+        [DataRow("resField")]
+        public void TestExistingElements(string elementId)
         {
-            IWebElement el = driver.FindElement(By.Id(elementId));
-            Assert.AreEqual(res, el.GetAttribute("value"));
+            IWebElement el = obj.FindElement(elementId);
+            Assert.AreEqual(true, el.Displayed);
         }
 
         [DataTestMethod]
@@ -164,8 +166,8 @@ namespace TestBrowsers
         [DataRow("but0", "0")]
         public void TestSimpleCheck(string elementId, string res)
         {
-            driver.FindElement(By.Id(elementId)).Click();
-            string num = driver.FindElement(By.Id("resField")).GetAttribute("value");
+            obj.FindElement(elementId).Click();
+            string num = obj.FindElement("resField").GetAttribute("value");
             Assert.AreEqual(res, num);
         }
 
@@ -178,9 +180,9 @@ namespace TestBrowsers
         {
             foreach (string str in butts)
             {
-                driver.FindElement(By.Id(str)).Click();
+                obj.FindElement(str).Click();
             }
-            string num = driver.FindElement(By.Name("resField")).GetAttribute("value");
+            string num = obj.FindElement("resField").GetAttribute("value");
             Assert.AreEqual(res, num);
         }
 
@@ -192,11 +194,11 @@ namespace TestBrowsers
         [DataRow("but7", "but0", "butDiv", "Infinity")]
         public void TestRealJob(string x, string y, string op, string res)
         {
-            driver.FindElement(By.Id(x)).Click();
-            driver.FindElement(By.Id(op)).Click();
-            driver.FindElement(By.Id(y)).Click();
-            driver.FindElement(By.Id("butEqual")).Click();
-            string calc = driver.FindElement(By.Name("resField")).GetAttribute("value");
+            obj.FindElement(x).Click();
+            obj.FindElement(op).Click();
+            obj.FindElement(y).Click();
+            obj.FindElement("butEqual").Click();
+            string calc = obj.FindElement("resField").GetAttribute("value");
             Assert.AreEqual(res, calc);
         }
 

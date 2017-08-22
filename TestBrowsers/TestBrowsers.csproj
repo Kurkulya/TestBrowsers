@@ -58,6 +58,7 @@
   <ItemGroup>
     <Compile Include="NUnitTests.cs" />
     <Compile Include="MSTests.cs" />
+    <Compile Include="POM.cs" />
     <Compile Include="Properties\AssemblyInfo.cs" />
     <Compile Include="YandexDriver.cs" />
   </ItemGroup>

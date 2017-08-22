@@ -17,10 +17,12 @@ namespace TestBrowsers
     [TestFixture(typeof(YandexDriver))]
     public class NUnitTets<TPage> where TPage : IWebDriver, new()
     {
+        POM obj;
         static IWebDriver driver = null;
         [OneTimeSetUp]
         public void DriverPath()
         {
+
             if (typeof(TPage) == typeof(OperaDriver))
             {
                 OperaOptions opera = new OperaOptions();
@@ -38,6 +40,7 @@ namespace TestBrowsers
             {
                 driver = new TPage();
             }
+            obj = new POM(driver);
         }
 
         [OneTimeTearDown]
@@ -53,26 +56,26 @@ namespace TestBrowsers
         }
 
         [Test]
-        [TestCase("but1", "1")]
-        [TestCase("but2", "2")]
-        [TestCase("but3", "3")]
-        [TestCase("but4", "4")]
-        [TestCase("but5", "5")]
-        [TestCase("but6", "6")]
-        [TestCase("but7", "7")]
-        [TestCase("but8", "8")]
-        [TestCase("but9", "9")]
-        [TestCase("but0", "0")]
-        [TestCase("butMinus", "-")]
-        [TestCase("butPlus", "+")]
-        [TestCase("butMult", "*")]
-        [TestCase("butDiv", "/")]
-        [TestCase("butEqual", "=")]
-        [TestCase("resField", "")]
-        public void TestExistingElements(string elementId, string res)
+        [TestCase("but1")]
+        [TestCase("but2")]
+        [TestCase("but3")]
+        [TestCase("but4")]
+        [TestCase("but5")]
+        [TestCase("but6")]
+        [TestCase("but7")]
+        [TestCase("but8")]
+        [TestCase("but9")]
+        [TestCase("but0")]
+        [TestCase("butMinus")]
+        [TestCase("butPlus")]
+        [TestCase("butMult")]
+        [TestCase("butDiv")]
+        [TestCase("butEqual")]
+        [TestCase("resField")]
+        public void TestExistingElements(string elementId)
         {
-            IWebElement el = driver.FindElement(By.Id(elementId));
-            NUnit.Framework.Assert.AreEqual(res, el.GetAttribute("value"));
+            IWebElement el = obj.FindElement(elementId);
+            NUnit.Framework.Assert.AreEqual(true, el.Displayed);
         }
 
         [Test]
@@ -88,8 +91,8 @@ namespace TestBrowsers
         [TestCase("but0", "0")]
         public void TestSimpleCheck(string elementId, string res)
         {
-            driver.FindElement(By.Id(elementId)).Click();
-            string num = driver.FindElement(By.Id("resField")).GetAttribute("value");
+            obj.FindElement(elementId).Click();
+            string num = obj.FindElement("resField").GetAttribute("value");
             NUnit.Framework.Assert.AreEqual(res, num);
         }
 
@@ -104,7 +107,7 @@ namespace TestBrowsers
             {
                 driver.FindElement(By.Id(str)).Click();
             }
-            string num = driver.FindElement(By.Name("resField")).GetAttribute("value");
+            string num = obj.FindElement("resField").GetAttribute("value");
             NUnit.Framework.Assert.AreEqual(res, num);
         }
 
@@ -116,11 +119,11 @@ namespace TestBrowsers
         [TestCase("but7", "but0", "butDiv", "Infinity")]
         public void TestRealJob(string x, string y, string op, string res)
         {
-            driver.FindElement(By.Id(x)).Click();
-            driver.FindElement(By.Id(op)).Click();
-            driver.FindElement(By.Id(y)).Click();
-            driver.FindElement(By.Id("butEqual")).Click();
-            string calc = driver.FindElement(By.Name("resField")).GetAttribute("value");
+            obj.FindElement(x).Click();
+            obj.FindElement(op).Click();
+            obj.FindElement(y).Click();
+            obj.FindElement("butEqual").Click();
+            string calc = obj.FindElement("resField").GetAttribute("value");
             NUnit.Framework.Assert.AreEqual(res, calc);
         }
 

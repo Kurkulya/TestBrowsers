@@ -105,7 +105,7 @@ namespace TestBrowsers
         {
             foreach (string str in butts)
             {
-                driver.FindElement(By.Id(str)).Click();
+                obj.FindElement(str).Click();
             }
             string num = obj.FindElement("resField").GetAttribute("value");
             NUnit.Framework.Assert.AreEqual(res, num);
